@@ -40,7 +40,16 @@ jobs:
         mkdir -p reports
         pytest --junitxml=reports/junit.xml
 
-    - name: Upload test results to GitHub
-      uses: actions/upload-test-results@v2
+    - name: Debug - show generated JUnit file
+      run: cat reports/junit.xml || echo "No junit.xml found"
+
+    - name: Upload test results to GitHub UI
+      uses: actions/upload-test-results@v1
       with:
         files: reports/junit.xml
+
+    - name: Upload raw JUnit report as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: junit-report
+        path: reports/junit.xml
